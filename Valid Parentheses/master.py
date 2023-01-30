@@ -2,6 +2,10 @@ class Solution:
     def __init__(self):
         self.left = ['(', '{', '[']
         self.right = [')', '}', ']']
+        self.scope = {
+                        "start": -1,
+                        "End": -1
+                    }
     def getPos(self, side, value): # O(n)
         """
             this function return position of target in side
@@ -16,6 +20,16 @@ class Solution:
             return side.index(value) + 1
         except:
             return False
+    def setScope(self, start, end):
+        """
+            this function set scope
+            parameters:
+                start: start index
+                end: end index
+            return: None
+        """
+        self.scope['start'] = start
+        self.scope['end'] = end
     def isValid(self, s: str) -> bool: # O(n^2)
         size = len(s)
         # length of s is odd return false
@@ -28,11 +42,13 @@ class Solution:
             while i <= size - 2:
                 open_pos = self.getPos(self.left, s[i])
                 if open_pos:
+                    
                     if self.getPos(self.left, s[i]) == self.getPos(self.right, s[i+1]):
-                        if i + 2 == last_index:
-                            i += 3
+                        if self.getPos(self.right, s[i+2]):
+                            i = self.scope['end'] + 1
                         else:
-                            i += 2
+                            # handel this condation
+                            pass
                     elif self.getPos(self.left, s[i]) == self.getPos(self.right, s[size - 1 - i]):
                         i += 1
                     elif i != 0:
@@ -44,7 +60,8 @@ class Solution:
                             elif self.getPos(self.left, s[i]) == self.getPos(self.right, s[j]):
                                 if count == 1:
                                     is_valid = True
-                                    last_index = j
+                                    if self.scope['start'] == -1 or j > self.scope['End']:
+                                        self.setScope(i, j)
                                     break
                                 else:
                                     count -= 1
