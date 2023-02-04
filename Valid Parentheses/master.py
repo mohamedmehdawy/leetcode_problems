@@ -2,10 +2,6 @@ class Solution:
     def __init__(self):
         self.left = ['(', '{', '[']
         self.right = [')', '}', ']']
-        self.scope = {
-                        "start": -1,
-                        "End": -1
-                    }
     def getPos(self, side, value): # O(n)
         """
             this function return position of target in side
@@ -20,16 +16,6 @@ class Solution:
             return side.index(value) + 1
         except:
             return False
-    def setScope(self, start, end):
-        """
-            this function set scope
-            parameters:
-                start: start index
-                end: end index
-            return: None
-        """
-        self.scope['start'] = start
-        self.scope['end'] = end
     def isValid(self, s: str) -> bool: # O(n^2)
         size = len(s)
         # length of s is odd return false
@@ -38,39 +24,46 @@ class Solution:
         
         else:
             i = 0
-            last_index = None # last index for controle range
+            expected = size // 2 # the expected number of paranthes
             while i <= size - 2:
                 open_pos = self.getPos(self.left, s[i])
                 if open_pos:
                     
                     if self.getPos(self.left, s[i]) == self.getPos(self.right, s[i+1]):
-                        if self.getPos(self.right, s[i+2]):
-                            i = self.scope['end'] + 1
-                        else:
-                            # handel this condation
-                            pass
-                    elif self.getPos(self.left, s[i]) == self.getPos(self.right, s[size - 1 - i]):
-                        i += 1
-                    elif i != 0:
+                        i = i + 2
+                        expected -= 1
+
+                    else:
                         count = 1
                         is_valid = False
+                        scope = {
+                        "start": -1,
+                        "end": -1
+                    }
                         for j in range(i+1, size): # check if paranthe is valid
                             if s[i] == s[j]:
                                 count += 1
                             elif self.getPos(self.left, s[i]) == self.getPos(self.right, s[j]):
                                 if count == 1:
                                     is_valid = True
-                                    if self.scope['start'] == -1 or j > self.scope['End']:
-                                        self.setScope(i, j)
+                                    expected -= 1
+                                    scope['start'] = i
+                                    scope['end'] = j
                                     break
                                 else:
                                     count -= 1
                         if is_valid:
-                            i += 1
+                            status = self.isValid(s[scope['start']+1:scope['end']])
+                            if status:
+                                i = scope['end'] + 1
+                            else:
+                                return False
                         else:
                             return False
-                    else:
-                        return False
+                    
+                    # check if expected number of paranthes end
+                    if expected == 0:
+                        return True
                 else: 
                     return False
             return True
@@ -78,5 +71,5 @@ class Solution:
 obj = Solution()
 
 # print(obj.isValid('()'))
-# print(obj.isValid('}{'))
-print(obj.isValid('[{()}]'))
+print(obj.isValid('}{'))
+print(obj.isValid('[{}{}{}{}{}(([[]]))]'))
