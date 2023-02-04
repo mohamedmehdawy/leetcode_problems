@@ -16,7 +16,7 @@ class Solution:
             return side.index(value) + 1
         except:
             return False
-    def isValid(self, s: str) -> bool: # O(n^2)
+    def isValid(self, s: str) -> bool: # O(2^n)
         size = len(s)
         # length of s is odd return false
         if size % 2 != 0:
