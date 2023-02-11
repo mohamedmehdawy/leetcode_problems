@@ -1,7 +1,20 @@
 class Solution:
+    def __init__(self):
+        self.areas = []
+    def checkPos(self, pos):
+        """
+            this function check if pos found in areas
+            parametrs:
+                pos: the current pos
+            return: boolean value of status of pos in areas and current area
+        """
+        for area in range(self.areas):
+            for ele in self.areas[area]:
+                if ele == pos:
+                    return True, area
+        return False, -1
     def maxAreaOfIsland(self, grid: list[list[int]]) -> int:
         one_pos = []
-        areas = []
         # get the pos of all one
         for row in range(len(grid)):
             for column in range(len(grid[row])):
@@ -11,15 +24,18 @@ class Solution:
         # here should use while insted of for loop
         for i in range(len(one_pos)):
             # append current one to areas
-            areas.append([one_pos[0]])
-            for j in range(1, len(one_pos)):
-                if one_pos[0][0] == one_pos[j][0] and one_pos[0][1] == one_pos[j][1] - 1:
-                    areas[i].append(one_pos[j])
-
-            for j in range(len(areas[i])):
-                one_pos.remove(areas[i][j])
+            area = []
+            area.append(one_pos[i])
+            left_count = 1
+            for j in range(len(one_pos)):
+                if one_pos[i][0] == one_pos[j][0] and one_pos[i][1] == one_pos[j][1] - left_count:
+                    if not self.checkPos(one_pos[j]):
+                        area.append(one_pos[j])
+                        left_count += 1
+            print(f"area is {area}")
+            self.areas.append(area)
             print(one_pos)
-        print(areas)
+        print(self.areas)
 obj = Solution()
 
-obj.maxAreaOfIsland([[0,0,1,0,0,0,0,1,0,0,0,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0]])
+obj.maxAreaOfIsland([[0,0,1,0,0,0,0,1,0,0,0,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0]]) 
