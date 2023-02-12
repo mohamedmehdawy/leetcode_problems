@@ -8,7 +8,7 @@ class Solution:
                 pos: the current pos
             return: boolean value of status of pos in areas and current area
         """
-        for area in range(self.areas):
+        for area in range(len(self.areas)):
             for ele in self.areas[area]:
                 if ele == pos:
                     return True, area
@@ -20,22 +20,50 @@ class Solution:
             for column in range(len(grid[row])):
                 if grid[row][column] == 1:
                     one_pos.append((row, column))
-        print(one_pos)
         # here should use while insted of for loop
         for i in range(len(one_pos)):
-            # append current one to areas
+            # area
             area = []
-            area.append(one_pos[i])
+            # check if current element found in any area access this area
+            check_area, area_index = self.checkPos(one_pos[i])
+            if check_area:
+                area = self.areas[area_index]
+            else:
+                area.append(one_pos[i])
+            # the counts for each position
+            right_count = 1
             left_count = 1
+            top_count = 1
+            bottom_count = 1
             for j in range(len(one_pos)):
-                if one_pos[i][0] == one_pos[j][0] and one_pos[i][1] == one_pos[j][1] - left_count:
-                    if not self.checkPos(one_pos[j]):
-                        area.append(one_pos[j])
-                        left_count += 1
-            print(f"area is {area}")
-            self.areas.append(area)
-            print(one_pos)
-        print(self.areas)
+                # check for x-aixs position
+                if one_pos[i][0] == one_pos[j][0]:
+                    # check for right position
+                    if one_pos[i][1] == one_pos[j][1] - right_count:
+                        if not self.checkPos(one_pos[j])[0]:
+                            area.append(one_pos[j])
+                            right_count += 1
+                    # check for right position
+                    elif one_pos[i][1] == one_pos[j][1] + left_count:
+                        if not self.checkPos(one_pos[j])[0]:
+                            area.append(one_pos[j])
+                            left_count += 1
+                # check for y-axis
+                if one_pos[i][1] == one_pos[j][1]:
+                    # check for top position
+                    if one_pos[i][0] == one_pos[j][0] + top_count:
+                        if not self.checkPos(one_pos[j])[0]:
+                            area.append(one_pos[j])
+                            top_count += 1
+                    # check for top position
+                    elif one_pos[i][0] == one_pos[j][0] - bottom_count:
+                        if not self.checkPos(one_pos[j])[0]:
+                            area.append(one_pos[j])
+                            bottom_count += 1
+            # if this is new area append to areas
+            if not check_area:
+                self.areas.append(area)
+        print(len(self.areas))
 obj = Solution()
 
-obj.maxAreaOfIsland([[0,0,1,0,0,0,0,1,0,0,0,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0]]) 
+obj.maxAreaOfIsland([[0,0,1,0,0,0,0,1,0,0,0,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0],[0,1,1,0,1,0,0,0,0,0,0,0,0],[0,1,0,0,1,1,0,0,1,0,1,0,0],[0,1,0,0,1,1,0,0,1,1,1,0,0],[0,0,0,0,0,0,0,0,0,0,1,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0],[0,0,0,0,0,0,0,1,1,0,0,0,0]]) 
