@@ -35,12 +35,17 @@ class Solution:
             left_count = 1
             top_count = 1
             bottom_count = 1
+            # test
+            if one_pos[i] == (4,9):
+                print(f"get traget, checked {check_area}, current area: {area_index}")
             for j in range(len(one_pos)):
                 # check for x-aixs position
                 if one_pos[i][0] == one_pos[j][0]:
                     # check for right position
                     if one_pos[i][1] == one_pos[j][1] - right_count:
+                        print(one_pos[j], self.checkPos(one_pos[j])[0])
                         if not self.checkPos(one_pos[j])[0]:
+                            
                             area.append(one_pos[j])
                             right_count += 1
                     # check for right position
@@ -48,8 +53,8 @@ class Solution:
                         if not self.checkPos(one_pos[j])[0]:
                             area.append(one_pos[j])
                             left_count += 1
-                # check for y-axis
-                if one_pos[i][1] == one_pos[j][1]:
+                # check for y-axis position
+                elif one_pos[i][1] == one_pos[j][1]:
                     # check for top position
                     if one_pos[i][0] == one_pos[j][0] + top_count:
                         if not self.checkPos(one_pos[j])[0]:
@@ -63,7 +68,9 @@ class Solution:
             # if this is new area append to areas
             if not check_area:
                 self.areas.append(area)
+        print(self.areas)
+ 
         print(len(self.areas))
 obj = Solution()
 
-obj.maxAreaOfIsland([[0,0,1,0,0,0,0,1,0,0,0,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0],[0,1,1,0,1,0,0,0,0,0,0,0,0],[0,1,0,0,1,1,0,0,1,0,1,0,0],[0,1,0,0,1,1,0,0,1,1,1,0,0],[0,0,0,0,0,0,0,0,0,0,1,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0],[0,0,0,0,0,0,0,1,1,0,0,0,0]]) 
+obj.maxAreaOfIsland([[0,0,1,0,0,0,0,1,0,0,0,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0],[0,1,1,0,1,0,0,0,0,0,0,0,0],[0,1,0,0,1,1,0,0,1,0,1,0,0],[0,1,0,0,1,1,0,0,1,1,1,0,0],[0,0,0,0,0,0,0,0,0,0,1,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0],[0,0,0,0,0,0,0,1,1,0,0,0,0]])
