@@ -1,7 +1,7 @@
 class Solution:
     def __init__(self):
         self.areas = []
-    def checkPos(self, pos):
+    def checkPos(self, pos): # O(n)
         """
             this function check if pos found in areas
             parametrs:
@@ -13,6 +13,13 @@ class Solution:
                 if ele == pos:
                     return True, area
         return False, -1
+    def mixAreas(self, pos):
+        """
+            this function mix areas if element found in not current area
+            parameters: 
+                pos: position of current element
+            
+        """
     def maxAreaOfIsland(self, grid: list[list[int]]) -> int:
         one_pos = []
         # get the pos of all one
@@ -35,15 +42,18 @@ class Solution:
             left_count = 1
             top_count = 1
             bottom_count = 1
-            # test
-            if one_pos[i] == (4,9):
-                print(f"get traget, checked {check_area}, current area: {area_index}")
+
             for j in range(len(one_pos)):
                 # check for x-aixs position
                 if one_pos[i][0] == one_pos[j][0]:
                     # check for right position
                     if one_pos[i][1] == one_pos[j][1] - right_count:
-                        print(one_pos[j], self.checkPos(one_pos[j])[0])
+                        check_area_status, area_index = self.checkPos(one_pos[j])
+                        if check_area_status and self.areas[area_index] != area:
+                            for ele in self.areas[area_index]:
+                                area.append(ele)
+                            self.areas.remove(self.areas[area_index])
+                            right_count += 1
                         if not self.checkPos(one_pos[j])[0]:
                             
                             area.append(one_pos[j])
@@ -69,7 +79,6 @@ class Solution:
             if not check_area:
                 self.areas.append(area)
         print(self.areas)
- 
         print(len(self.areas))
 obj = Solution()
 
