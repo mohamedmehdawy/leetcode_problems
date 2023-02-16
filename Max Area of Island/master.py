@@ -20,6 +20,7 @@ class Solution:
                 pos: position of current element
             
         """
+        pass
     def maxAreaOfIsland(self, grid: list[list[int]]) -> int:
         one_pos = []
         # get the pos of all one
@@ -60,6 +61,12 @@ class Solution:
                             right_count += 1
                     # check for right position
                     elif one_pos[i][1] == one_pos[j][1] + left_count:
+                        check_area_status, area_index = self.checkPos(one_pos[j])
+                        if check_area_status and self.areas[area_index] != area:
+                            for ele in self.areas[area_index]:
+                                area.append(ele)
+                            self.areas.remove(self.areas[area_index])
+                            left_count += 1
                         if not self.checkPos(one_pos[j])[0]:
                             area.append(one_pos[j])
                             left_count += 1
@@ -67,19 +74,30 @@ class Solution:
                 elif one_pos[i][1] == one_pos[j][1]:
                     # check for top position
                     if one_pos[i][0] == one_pos[j][0] + top_count:
+                        check_area_status, area_index = self.checkPos(one_pos[j])
+                        if check_area_status and self.areas[area_index] != area:
+                            for ele in self.areas[area_index]:
+                                area.append(ele)
+                            self.areas.remove(self.areas[area_index])
+                            top_count += 1
                         if not self.checkPos(one_pos[j])[0]:
                             area.append(one_pos[j])
                             top_count += 1
                     # check for top position
                     elif one_pos[i][0] == one_pos[j][0] - bottom_count:
+                        check_area_status, area_index = self.checkPos(one_pos[j])
+                        if check_area_status and self.areas[area_index] != area:
+                            for ele in self.areas[area_index]:
+                                area.append(ele)
+                            self.areas.remove(self.areas[area_index])
+                            bottom_count += 1
                         if not self.checkPos(one_pos[j])[0]:
                             area.append(one_pos[j])
                             bottom_count += 1
             # if this is new area append to areas
             if not check_area:
                 self.areas.append(area)
-        print(self.areas)
-        print(len(self.areas))
+        return len(self.areas)
 obj = Solution()
 
 obj.maxAreaOfIsland([[0,0,1,0,0,0,0,1,0,0,0,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0],[0,1,1,0,1,0,0,0,0,0,0,0,0],[0,1,0,0,1,1,0,0,1,0,1,0,0],[0,1,0,0,1,1,0,0,1,1,1,0,0],[0,0,0,0,0,0,0,0,0,0,1,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0],[0,0,0,0,0,0,0,1,1,0,0,0,0]])
