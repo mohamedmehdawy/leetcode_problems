@@ -15,10 +15,18 @@ class Solution:
                 if nums[i] == nums[j]:
                     nums[j], nums[valid_area] = nums[valid_area], nums[j]
                     valid_area -= 1
-                j += 1
+                else:
+                    j += 1
             i += 1
         
         # sort valid area
+        slice_area = nums[:valid_area+1]
+        slice_area.sort()
+        
+        for i in range(valid_area+1):
+            nums[i] = slice_area[i]
+        
+        return valid_area + 1
         
 obj = Solution()
-print(obj.removeDuplicates([0,0,1,1,1,2,2,3,3,4]))
+print(obj.removeDuplicates([1,1,1]))
