@@ -1,0 +1,11 @@
+containsDuplicate(nums) => this function return true if any number of it is found at least twice
+#
+init the dict = {}
+
+loop through nums (number):
+#
+check if the number is in dictionry, if true: return true
+add number to the map with value true
+#
+if arravie to here return false
+#
