@@ -1,6 +1,6 @@
 containsDuplicate(nums) => this function return true if any number of it is found at least twice
 #
-init the dict = {}
+init the nums_map = {}
 
 loop through nums (number):
 #
